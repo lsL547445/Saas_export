@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--namespace: Dao接口的位置（Dao接口全名）-->
+<mapper namespace="com.lsl.dao.CompanyMapper">
+    <!--定义结果集映射-->
+    <resultMap id="BaseResultMap" type="com.lsl.company.Company">
+        <!--主键-->
+        <id property="id" column="id"/>
+        <!--其他字段 按住alt键-->
+        <result property="name" column="name"/>
+        <result property="expirationDate" column="expiration_date"/>
+        <result property="address" column="address"/>
+        <result property="licenseId" column="license_id"/>
+        <result property="representative" column="representative"/>
+        <result property="phone" column="phone"/>
+        <result property="companySize" column="company_size"/>
+        <result property="industry" column="industry"/>
+        <result property="remarks" column="remarks"/>
+        <result property="state" column="state"/>
+        <result property="balance" column="balance"/>
+        <result property="city" column="city"/>
+    </resultMap>
+
+    <!--查询所有企业 id:接口方法名-->
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT * FROM ss_company
+    </select>
+    <!--通过id查询企业信息-->
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT
+          id,name,expiration_date,license_id ,representative ,phone,company_size,industry,remarks,state  ,balance,city,address
+        FROM
+          ss_company
+        where
+          id=#{id}
+    </select>
+    <select id="add" >
+        insert into`ss_company`
+          (id,name,expiration_date,license_id ,representative ,phone,company_size,industry,remarks,state  ,balance,city,address)
+        values
+          (#{id},#{name},#{expirationDate},#{licenseId},#{representative},#{phone},#{companySize},#{industry},#{remarks},#{state},#{balance},#{city},#{address})
+    </select>
+    <select id="save" >
+        update `ss_company` set
+          id=#{id},name=#{name},expiration_date=#{expirationDate},license_id=#{licenseId} ,representative=#{representative},phone=#{phone},company_size=#{companySize},industry=#{industry},remarks=#{remarks},state=#{state} ,balance=#{balance},city=#{city},address=#{address}
+        where
+          id =#{id}
+    </select>
+    <select id="deleteById" >
+        delete from `ss_company` where id=#{id};
+    </select>
+    <select id="findByPage" resultMap="BaseResultMap">
+        delete from `ss_company` where id=#{id};
+    </select>
+</mapper>

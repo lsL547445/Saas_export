@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lsl.dao.ModuleDao">
+    <resultMap id="BaseResultMap" type="com.lsl.system.Module">
+        <id column="module_id" property="id" />
+        <result column="parent_id" property="parentId" />
+        <result column="parent_name" property="parentName" />
+        <result column="name" property="name" />
+        <result column="layer_num" property="layerNum" />
+        <result column="is_leaf" property="isLeaf" />
+        <result column="ico" property="ico" />
+        <result column="cpermission" property="cpermission" />
+        <result column="curl" property="curl" />
+        <result column="ctype" property="ctype" />
+        <result column="state" property="state" />
+        <result column="belong" property="belong" />
+        <result column="cwhich" property="cwhich" />
+        <result column="quote_num" property="quoteNum" />
+        <result column="remark" property="remark" />
+        <result column="order_no"  property="orderNo" />
+    </resultMap>
+
+    <!--查询全部-->
+    <select id="findAll" resultMap="BaseResultMap">
+        select * from ss_module
+    </select>
+
+    <!--根据id查询-->
+    <select id="findById" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from pe_module where module_id = #{id}
+    </select>
+
+    <!--删除-->
+    <delete id="delete">
+        delete from pe_module where module_id = #{id}
+    </delete>
+
+    <!--保存-->
+    <insert id="save">
+        insert into pe_module (module_id, name, remark, order_no,company_id, company_name)
+        values (#{id}, #{name}, #{remark}, #{orderNo}, #{companyId}, #{companyName})
+    </insert>
+
+    <!--更新-->
+    <update id="update">
+        update pe_module
+        set name = #{name},
+          remark = #{remark},
+          order_no = #{orderNo}
+        where module_id = #{id}
+    </update>
+    <select id="findModulesByRoleId" resultMap="BaseResultMap">
+        select * from `ss_module` m inner join `pe_role_module`  rm on m.`module_id`=rm.`module_id` where rm.`role_id`=#{id}
+    </select>
+</mapper>

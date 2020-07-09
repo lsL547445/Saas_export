@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--namespace: Dao接口的位置（Dao接口全名）-->
+<mapper namespace="com.lsl.dao.DeptMapper">
+    <!--定义结果集映射-->
+    <resultMap id="BaseResultMap" type="com.lsl.system.Dept">
+        <!--主键-->
+        <id property="id" column="dept_id"/>
+        <!--其他字段 按住alt键-->
+        <result property="deptName" column="dept_name"/>
+        <result property="state" column="state"/>
+        <result property="companyId" column="company_id"/>
+        <result property="companyName" column="company_name"/>
+        <association property="parent"
+                     column="parent_id"
+                     javaType="com.lsl.system.Dept"
+                     select="findById"
+        />
+
+    </resultMap>
+
+    <!--查询所有企业 id:接口方法名-->
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT * FROM pe_dept
+    </select>
+    <!--通过id查询企业信息-->
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT
+          dept_id,dept_name,parent_id,state,company_id,company_name
+        FROM
+          pe_dept
+        where
+          dept_id=#{id}
+    </select>
+    <select id="add" >
+        insert into `pe_dept`
+          (dept_id,dept_name,parent_id,state,company_id,company_name)
+        values
+          (#{id},#{deptName},
+          <choose>
+            <when test="parent!=null and parent.id!=null and parent.id!=''">
+                #{parent.id},
+            </when>
+            <otherwise>
+                NULL,
+            </otherwise>
+          </choose>
+    #{state},#{companyId},#{companyName})
+    </select>
+    <select id="save" >
+        update `pe_dept` set
+          dept_id=#{id},dept_name=#{deptName},
+          <choose>
+            <when test="parent!=null and parent.id!=null and parent.id!=''">
+                parent_id = #{parent.id},
+            </when>
+            <otherwise>
+                parent_id = NULL,
+          </otherwise>
+        </choose>
+      state=#{state},company_id=#{companyId},company_name=#{companyName}
+        where
+          dept_id =#{id}
+    </select>
+    <select id="deleteById" >
+        delete from `pe_dept` where dept_id=#{id};
+    </select>
+    <select id="findByPage" resultMap="BaseResultMap" >
+        delete from `pe_dept` where dept_id=#{id};
+    </select>
+</mapper>

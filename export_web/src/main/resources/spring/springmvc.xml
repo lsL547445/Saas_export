@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!--1.扫描Controller所在包（不要去扫描service）-->
+    <context:component-scan base-package="com.lsl.web"/>
+
+    <!--2.配置视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--2.1 页面前缀 注意：放在WEB-INF下用户不能直接访问页面，更加安全-->
+        <property name="prefix" value="/WEB-INF/pages/"/>
+        <!--2.2 页面后缀-->
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--3.mvc注解驱动-->
+    <mvc:annotation-driven conversion-service="conversionService"/>
+    <!--解决静态资源访问不了的情况-->
+    <mvc:default-servlet-handler/>
+
+    <!--配置类型转换器-->
+    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <!--配置自定义转换器-->
+        <property name="converters">
+            <set>
+                <bean class="com.lsl.web.converter.StringToDateConverter"/>
+            </set>
+        </property>
+    </bean>
+</beans>
